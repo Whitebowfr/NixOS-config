@@ -90,6 +90,7 @@ in
       teams-for-linux
       hyperhdr
       ledfx
+      rofi-wayland
     ])
     ++ [
       python-packages

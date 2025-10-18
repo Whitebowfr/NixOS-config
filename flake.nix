@@ -32,19 +32,30 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      ags,
-      astal,
-      ...
-    }:
+    inputs@{ self, nixpkgs, ... }:
+    let
+      system = "x86_64-linux";
+      host = "ShrekPC";
+      username = "whitebow";
+
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
+      };
+    in
     {
       nixosConfigurations = {
-        main = nixpkgs.lib.nixosSystem {
+        "${host}" = nixpkgs.lib.nixosSystem rec {
+          specialArgs = {
+            inherit system;
+            inherit inputs;
+            inherit username;
+            inherit host;
+          };
           system = "x86_64-linux";
-          host = "ShrekPC";
-          username = "whitebow";
 
           modules = [
             ./configuration/system.nix

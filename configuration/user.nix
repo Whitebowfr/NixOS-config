@@ -145,24 +145,24 @@ in
       enableSSHSupport = true;
     };
 
-    rofi = {
-      enable = true;
-      package = pkgs.rofi-wayland;
-      theme = /home/whitebow/.config/rofi/themes/KooL_style-5.rasi;
-      font = "JetBrainsMono Nerd Font SemiBold 13";
-    };
+    # rofi = {
+    #   enable = true;
+    #   package = pkgs.rofi-wayland;
+    #   theme = /home/whitebow/.config/rofi/themes/KooL_style-5.rasi;
+    #   font = "JetBrainsMono Nerd Font SemiBold 13";
+    # };
   };
 
   # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
+  # xdg.portal = {
+  #   enable = true;
+  #   wlr.enable = false;
+  #   extraPortals = [
+  #     pkgs.xdg-desktop-portal-gtk
+  #   ];
+  #   configPackages = [
+  #     pkgs.xdg-desktop-portal-gtk
+  #     pkgs.xdg-desktop-portal
+  #   ];
+  # };
 }

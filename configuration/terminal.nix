@@ -48,5 +48,4 @@
                 setopt appendhistory;
       '';
     };
-  };
-}
+  }

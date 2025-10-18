@@ -17,11 +17,12 @@ in
   imports = [
     ./hardware.nix
     ./specialisation.nix
-    ./users.nix
+    ./user.nix
     ./terminal.nix
     ./packages.nix
     ./hyprland.nix
-    ./variables.nix
+    # ./variables.nix
+    ../modules/intel-gpu.nix
   ];
 
   # BOOT related stuff
@@ -87,10 +88,6 @@ in
       ];
     };
   };
-
-  # Extra Module Options
-  vm.guest-services.enable = false;
-  # time.hardwareClockInLocalTime = true;
 
   # networking
   networking.networkmanager.enable = true;

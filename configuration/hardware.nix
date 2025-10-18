@@ -10,10 +10,6 @@
 }:
 
 {
-  imports = [
-    "../modules/intel-gpu.nix"
-  ];
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "thunderbolt"
@@ -86,7 +82,6 @@
 
   # Intel CPU
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  drivers.intel.enable = true;
   hardware.intelgpu.vaapiDriver = "intel-media-driver";
 
   services.hardware.bolt.enable = true; # Thunderbolt
