@@ -30,8 +30,6 @@ in
     kernelPackages = pkgs.linuxPackages_zen; # zen Kernel
 
     kernelParams = [
-      "systemd.mask=systemd-vconsole-setup.service"
-      "systemd.mask=dev-tpmrm0.device" # this is to mask that stupid 1.5 mins systemd bug
       "nowatchdog"
       "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
       "nvidia-drm.modeset=1"
