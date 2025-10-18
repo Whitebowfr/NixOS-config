@@ -9,10 +9,6 @@
   inputs,
   ...
 }:
-
-let
-  inherit (import ./variables.nix) gitUsername;
-in
 {
   imports = [
     inputs.spicetify-nix.nixosModules.default
@@ -30,7 +26,7 @@ in
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
-      description = "${gitUsername}";
+      description = "Whitebowfr";
       extraGroups = [
         "networkmanager"
         "wheel"

@@ -9,10 +9,6 @@
   system,
   ...
 }:
-let
-
-  inherit (import ./variables.nix) keyboardLayout;
-in
 {
   imports = [
     ./hardware.nix
@@ -271,7 +267,7 @@ in
     };
   };
 
-  console.keyMap = "${keyboardLayout}";
+  console.keyMap = "us";
 
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
