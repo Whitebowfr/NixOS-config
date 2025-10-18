@@ -29,27 +29,27 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+  };
 
-    outputs =
-      {
-        self,
-        nixpkgs,
-        ags,
-        astal,
-        ...
-      }:
-      {
-        nixosConfigurations = {
-          main = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            host = "ShrekPC";
-            username = "whitebow";
+  outputs =
+    {
+      self,
+      nixpkgs,
+      ags,
+      astal,
+      ...
+    }:
+    {
+      nixosConfigurations = {
+        main = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          host = "ShrekPC";
+          username = "whitebow";
 
-            modules = [
-              ./configuration/system.nix
-            ];
-          };
+          modules = [
+            ./configuration/system.nix
+          ];
         };
       };
-  };
+    };
 }
