@@ -29,6 +29,11 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+
+     quickshell = {
+        url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
   };
 
   outputs =
