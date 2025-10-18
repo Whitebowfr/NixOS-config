@@ -43,7 +43,6 @@ in
       (mpv.override { scripts = [ mpvScripts.mpris ]; })
       platformio
 
-      ags # desktop overview
       btop
       brightnessctl # for brightness control
       cava
@@ -91,6 +90,7 @@ in
       hyperhdr
       ledfx
       rofi-wayland
+      hyprland-qt-support
     ])
     ++ [
       python-packages

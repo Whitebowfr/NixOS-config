@@ -21,7 +21,7 @@ in
     ./terminal.nix
     ./packages.nix
     ./hyprland.nix
-    # ./variables.nix
+    ./quickshell.nix
     ../modules/intel-gpu.nix
   ];
 
@@ -276,6 +276,7 @@ in
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
+  environment.sessionVariables.QML_IMPORT_PATH = "${pkgs.hyprland-qt-support}/lib/qt-6/qml";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
