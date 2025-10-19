@@ -4,11 +4,8 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
-
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "sdhci_pci" ];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "thunderbolt" "vmd" "nvme" "sdhci_pci" ];
   #boot.initrd.kernelModules = [ "thunderbolt" "usbhid" "joydev" "xpad" "nvidia"];
 
   #boot.kernelModules = [
@@ -18,58 +15,56 @@
   #  "xpad"
   #  "nvidia"
   #  "nvidia_modeset"
-#    "nvidia_uvm"
-#    "nvidia_drm"
-#    "amdgpu"
-#    "kvm-intel"
-#  ];
+  #    "nvidia_uvm"
+  #    "nvidia_drm"
+  #    "amdgpu"
+  #    "kvm-intel"
+  #  ];
   boot.extraModulePackages = [ ];
   boot.blacklistedKernelModules = [ "nouveau" ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-      fsType = "btrfs";
-      options = [ "subvol=root" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
+    fsType = "btrfs";
+    options = [ "subvol=root" ];
+  };
 
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-      fsType = "btrfs";
-      options = [ "subvol=nix" ];
-    };
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
+    fsType = "btrfs";
+    options = [ "subvol=nix" ];
+  };
 
-  fileSystems."/swap" =
-    { device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-      fsType = "btrfs";
-      options = [ "subvol=swap" ];
-    };
+  fileSystems."/swap" = {
+    device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
+    fsType = "btrfs";
+    options = [ "subvol=swap" ];
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
+    fsType = "btrfs";
+    options = [ "subvol=home" ];
+  };
 
-  fileSystems."/bin" =
-    { device = "/usr/bin";
-      fsType = "none";
-      options = [ "bind" ];
-    };
+  fileSystems."/bin" = {
+    device = "/usr/bin";
+    fsType = "none";
+    options = [ "bind" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/679B-1C1B";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/679B-1C1B";
+    fsType = "vfat";
+    options = [ "fmask=0022" "dmask=0022" ];
+  };
 
-  swapDevices = [ 
-    { 
-	device = "/swap/swapfile"; 
-        size = 16 * 1024;
-    }
-  ];
-  boot.resumeDevice="/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-  boot.kernelParams = ["resume_offset=131071"];
+  swapDevices = [{
+    device = "/swap/swapfile";
+    size = 16 * 1024;
+  }];
+  boot.resumeDevice = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
+  boot.kernelParams = [ "resume_offset=131071" ];
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
@@ -78,57 +73,15 @@
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   systemd.services.fprintd = {
     wantedBy = [ "multi-user.target" ];
     serviceConfig.Type = "simple";
   };
 
-# Install the driver
-#  services.fprintd.enable = true;
-# If simply enabling fprintd is not enough, try enabling fprintd.tod...
-#  services.fprintd.tod.enable = true;
-# ...and use one of the next four drivers
-# services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix; # Goodix driver module
-#  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-elan; # Elan(04f3:0c4b) driver
-# services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090; # (Marked as broken as of 2025/04/23!) driver for 2016 ThinkPads
-# services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix-550a; # Goodix 550a driver (from Lenovo)
-  hardware.graphics = {
-    enable = true;
-  };
+  hardware.graphics = { enable = true; };
   services.hardware.bolt.enable = true;
   hardware.graphics.enable32Bit = true;
-#  services.xserver.videoDrivers = [
-#	"nvidia"
-#	"modesetting"
-#	"fbdev"
-#  ];
- # hardware.opengl = {
-    #enable = true;
-    #driSupport = true;
-    #driSupport32Bit = true;
-    #extraPackages = with pkgs; [ mesa vulkan-loader];
-   # extraPackages32 = with pkgs; [ mesa.drivers vulkan-loader];
-  #};
-
-#  hardware.nvidia = {
-#
-#    modesetting.enable = true;
-#    powerManagement.enable = false;
-#
-#    powerManagement.finegrained = false;
-
-#    open = false;
-#    nvidiaSettings = true;
-#    package = config.boot.kernelPackages.nvidiaPackages.stable;
-#    prime = {
-	#sync.enable = true;
-	#sync.allowExternalGpu = true;
-	#offload.enable = true;
-	#offload.enableOffLoadCommand = true;
-#	nvidiaBusId = "PCI:45:0:0";
-#	intelBusId = "PCI:0:2:0";
-#    };
-#  };
 }
