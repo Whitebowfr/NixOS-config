@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 {
   environment.systemPackages = with pkgs; [
+    # inputs.caelestia-shell.packages.${pkgs.system}.default
     inputs.quickshell.packages.${pkgs.system}.default
 
     # Qt6 related kits（for slove Qt5Compat problem）

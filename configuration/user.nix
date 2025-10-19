@@ -111,11 +111,12 @@
 
     hyprland = {
       enable = true;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };
 
-    hyprlock.enable = true;
+    #hyprlock.enable = true;
     git.enable = true;
     nm-applet.indicator = true;
 

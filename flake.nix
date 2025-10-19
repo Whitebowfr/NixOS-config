@@ -34,6 +34,16 @@
         url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -64,6 +74,14 @@
 
           modules = [
             ./configuration/system.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.whitebow = import ./configuration/home.nix;
+            }
           ];
         };
       };

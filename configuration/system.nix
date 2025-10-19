@@ -16,7 +16,6 @@
     ./user.nix
     ./terminal.nix
     ./packages.nix
-    ./hyprland.nix
     ./quickshell.nix
     ../modules/intel-gpu.nix
   ];
@@ -44,15 +43,17 @@
     };
 
     # Bootloader GRUB
+    loader.efi.canTouchEfiVariables = true;
     loader.grub = {
       enable = true;
-      devices = [ "nodev" ];
+      device = "nodev";
       efiSupport = true;
       gfxmodeBios = "auto";
       memtest86.enable = true;
-      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
+      #extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
       theme = inputs.nixos-grub-themes.packages.${pkgs.system}.hyperfluent;
+      #efiInstallAsRemovable = true;
     };
 
     # Make /tmp a tmpfs
@@ -72,7 +73,7 @@
     };
 
     plymouth = {
-      enable = true;
+      enable = false;
       theme = "red_loader";
       themePackages = with pkgs; [
         # By default we would install all themes
@@ -156,24 +157,24 @@
     };
 
     desktopManager.plasma6.enable = true;
-
+    
     displayManager.sddm.enable = true;
     displayManager.sddm.wayland.enable = true;
 
-    greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        initial_session = {
-          user = username;
-          command = "Hyprland";
-        };
-        default_session = {
-          user = username;
-          command = "Hyprland";
-        };
-      };
-    };
+    #greetd = {
+    #  enable = true;
+    #  vt = 3;
+    #  settings = {
+    #    initial_session = {
+    #      user = "whitebow";
+    #      command = "startplasma-wayland";
+    #    };
+    #    default_session = {
+    #      user = "whitebow";
+    #      command = "startplasma-wayland";
+    #    };
+    #  };
+    #};
 
     smartd = {
       enable = false;
@@ -212,6 +213,11 @@
     fwupd.enable = true;
     gnome.gnome-keyring.enable = true;
   };
+
+  environment.etc."greetd/environments".text = ''
+    Hyprland
+    startplasma-wayland
+  '';
 
   systemd.services.flatpak-repo = {
     path = [ pkgs.flatpak ];
