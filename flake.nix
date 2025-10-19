@@ -37,7 +37,6 @@
 
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
@@ -84,7 +83,12 @@
               home-manager.extraSpecialArgs = specialArgs;
               home-manager.backupFileExtension = ".oassss";
 
-              home-manager.users.whitebow = import ./configuration/home.nix;
+              home-manager.users.whitebow = {inputs, ...}: { 
+                imports = [
+                  inputs.caelestia-shell.homeManagerModules.default
+                  ./configuration/home.nix
+                ];
+              };
             }
           ];
         };

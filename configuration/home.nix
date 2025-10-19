@@ -34,6 +34,7 @@
   programs.caelestia = {
     enable = true;
     package = inputs.caelestia-shell.packages.x86_64-linux.with-cli.override {xkeyboard-config = pkgs.xkeyboard_config;}; 
+    settings = import ../customisation/caelestia.nix;
   };
 
   wayland.windowManager.hyprland = {
@@ -52,38 +53,14 @@
       #};
     };
     extraConfig = ''
-      exec-once = $HOME/.config/hypr/initial-boot.sh
 
-      # Sourcing external config files
-      $configs = $HOME/.config/hypr/configs # Default Configs directory path
+      source=$HOME/.config/hypr/keybinds.conf 
+      source=$HOME/.config/hypr/shortcuts.conf 
+      source=$HOME/.config/hypr/startup.conf 
+      source=$HOME/.config/hypr/monitors.conf 
+      source=$HOME/.config/hypr/windowRules.conf 
+      source=$HOME/.config/hypr/settings.conf 
 
-      source=$configs/Keybinds.conf # Pre-configured keybinds
-
-      # ## This is where you want to start tinkering 
-      $UserConfigs = $HOME/.config/hypr/UserConfigs # User Configs directory path
-
-      source= $UserConfigs/Startup_Apps.conf # put your start-up packages on this file
-
-      source= $UserConfigs/ENVariables.conf # Environment variables to load
-
-      #source= $UserConfigs/Monitors.conf # Its all about your monitor config (old dots) will remove on push t>
-      #source= $UserConfigs/WorkspaceRules.conf # Hyprland workspaces (old dots) will remove on push to main
-
-      source= $UserConfigs/Laptops.conf # For laptop related
-
-      source= $UserConfigs/LaptopDisplay.conf # Laptop display related. You need to read the comment on this f>
-
-      source= $UserConfigs/WindowRules.conf # all about Hyprland Window Rules and Layer Rules
-
-      source= $UserConfigs/UserDecorations.conf # Decorations config file
-
-      source= $UserConfigs/UserAnimations.conf # Animation config file
-
-      source= $UserConfigs/UserKeybinds.conf # Put your own keybinds here
-
-      source= $UserConfigs/UserSettings.conf # Main Hyprland Settings.
-
-      source= $UserConfigs/01-UserDefaults.conf # settings for User defaults apps
 
       # nwg-displays
       source= $HOME/.config/hypr/monitors.conf
