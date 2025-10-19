@@ -155,26 +155,27 @@
         variant = "";
       };
     };
-
-    desktopManager.plasma6.enable = true;
     
+    desktopManager.plasma6.enable = true;
+
     displayManager.sddm.enable = true;
     displayManager.sddm.wayland.enable = true;
-
-    #greetd = {
-    #  enable = true;
-    #  vt = 3;
-    #  settings = {
-    #    initial_session = {
-    #      user = "whitebow";
-    #      command = "startplasma-wayland";
-    #    };
-    #    default_session = {
-    #      user = "whitebow";
-    #      command = "startplasma-wayland";
-    #    };
-    #  };
-    #};
+    greetd = {
+      enable = true;
+      vt = 3;
+      settings = {
+        initial_session = {
+          user = username;
+	  command = "Hyprland";
+         # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --cmd Hyprland"; # start Hyprland with a TUI login manager
+        };
+	default_session = {
+	  user = username;
+	  command = "Hyprland";
+	};
+	#default_session = initial_session;
+      };
+    };
 
     smartd = {
       enable = false;
