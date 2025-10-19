@@ -82,7 +82,7 @@
 
   # Intel CPU
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.intelgpu.vaapiDriver = "intel-media-driver";
+  # hardware.intelgpu.vaapiDriver = "intel-media-driver";
 
   services.hardware.bolt.enable = true; # Thunderbolt
 

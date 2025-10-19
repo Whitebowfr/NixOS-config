@@ -7,7 +7,7 @@
 }:
 {
   home.stateVersion = "24.11";
-
+  
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
@@ -24,7 +24,7 @@
   programs.rofi = {
     enable = true;
     package = pkgs.rofi-wayland;
-    theme = /home/whitebow/.config/rofi/themes/KooL_style-5.rasi;
+    theme = "${config.home.homeDirectory}/.config/rofi/themes/KooL_style-5.rasi";
     font = "JetBrainsMono Nerd Font SemiBold 13";
     plugins = with pkgs; [
       (rofi-calc.override { rofi-unwrapped = rofi-wayland-unwrapped; })
