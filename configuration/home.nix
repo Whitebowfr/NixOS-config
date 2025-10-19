@@ -31,6 +31,11 @@
     ];
   };
 
+  programs.caelestia = {
+    enable = true;
+    package = inputs.caelestia-shell.packages.x86_64-linux.with-cli.override {xkeyboard-config = pkgs.xkeyboard_config;}; 
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     #	plugins = [
