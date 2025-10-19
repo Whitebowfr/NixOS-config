@@ -49,6 +49,7 @@
   outputs =
     inputs@{ self, nixpkgs, home-manager, ... }:
     let
+      specialArgs = {inherit inputs;};
       system = "x86_64-linux";
       host = "ShrekPC";
       username = "whitebow";
@@ -81,7 +82,7 @@
               home-manager.useUserPackages = true;
 
               home-manager.extraSpecialArgs = specialArgs;
-              home-manager.backupFileExtension = ".old";
+              home-manager.backupFileExtension = ".oassss";
 
               home-manager.users.whitebow = import ./configuration/home.nix;
             }

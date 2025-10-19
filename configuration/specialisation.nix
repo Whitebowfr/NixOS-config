@@ -5,6 +5,7 @@
 {
   specialisation = {
     egpu.configuration = {
+      system.nixos.tags = ["egpu"];
       boot.initrd.kernelModules = [
         "thunderbolt"
         "usbhid"
@@ -46,6 +47,7 @@
       };
     };
     igpu.configuration = {
+      system.nixos.tags = ["igpu"];
       boot.kernelModules = [
         "thunderbolt"
         "usbhid"

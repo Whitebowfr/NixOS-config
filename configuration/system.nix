@@ -15,11 +15,7 @@ in {
     ./specialisation.nix
     ./quickshell.nix
     ./terminal.nix
-    ../modules/amd-drivers.nix
-    #../../modules/nvidia-drivers.nix
     ../modules/intel-drivers.nix
-    ../modules/vm-guest-services.nix
-    ../modules/local-hardware-clock.nix
   ];
 
   # BOOT related stuff
@@ -112,12 +108,7 @@ in {
   #};
 
   # Extra Module Options
-  drivers.intel.enable = true;
-  vm.guest-services.enable = false;
-  local.hardware-clock.enable = false;
-
-  # networking
-  networking.networkmanager.enable = true;
+ networking.networkmanager.enable = true;
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default
     ++ [ "pool.ntp.org" ];
@@ -257,6 +248,29 @@ in {
     upower.enable = true;
 
     gnome.gnome-keyring.enable = true;
+
+    #printing = {
+    #  enable = false;
+    #  drivers = [
+    # pkgs.hplipWithPlugin
+    #  ];
+    #};
+
+    #avahi = {
+    #  enable = true;
+    #  nssmdns4 = true;
+    #  openFirewall = true;
+    #};
+
+    #ipp-usb.enable = true;
+
+    #syncthing = {
+    #  enable = false;
+    #  user = "${username}";
+    #  dataDir = "/home/${username}";
+    #  configDir = "/home/${username}/.config/syncthing";
+    #};
+
   };
 
   systemd.services.flatpak-repo = {
@@ -279,6 +293,18 @@ in {
     enable = true;
     cpuFreqGovernor = "schedutil";
   };
+
+  #hardware.sane = {
+  #  enable = true;
+  #  extraBackends = [ pkgs.sane-airscan ];
+  #  disabledDefaultBackends = [ "escl" ];
+  #};
+
+  # Extra Logitech Support
+  hardware.logitech.wireless.enable = false;
+  hardware.logitech.wireless.enableGraphical = false;
+
+  #services.pulseaudio.enable = true; # stable branch
 
   # Bluetooth
   hardware = {
@@ -336,6 +362,7 @@ in {
     };
   };
 
+  # Virtualization / Containers
   #virtualisation.libvirtd.enable = false;
   virtualisation.podman = {
     enable = false;
@@ -364,4 +391,5 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
+
 }

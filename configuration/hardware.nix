@@ -4,22 +4,11 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "thunderbolt" "vmd" "nvme" "sdhci_pci" ];
-  #boot.initrd.kernelModules = [ "thunderbolt" "usbhid" "joydev" "xpad" "nvidia"];
-
-  #boot.kernelModules = [
-  #  "thunderbolt"
-  #  "usbhid"
-  #  "joydev"
-  #  "xpad"
-  #  "nvidia"
-  #  "nvidia_modeset"
-  #    "nvidia_uvm"
-  #    "nvidia_drm"
-  #    "amdgpu"
-  #    "kvm-intel"
-  #  ];
+    
   boot.extraModulePackages = [ ];
   boot.blacklistedKernelModules = [ "nouveau" ];
 
@@ -81,6 +70,8 @@
     serviceConfig.Type = "simple";
   };
 
+  # Install the driver
+  #  services.fprintd.enable = true;
   hardware.graphics = { enable = true; };
   services.hardware.bolt.enable = true;
   hardware.graphics.enable32Bit = true;

@@ -102,8 +102,8 @@ in
     inkscape-with-extensions
     nmap
     wireguard-tools
-    teams-for-linux
-    hyperhdr
+      teams-for-linux
+      hyperhdr
       ledfx
       rofi-wayland
       hyprland-qt-support
