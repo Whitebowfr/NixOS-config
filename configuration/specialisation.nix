@@ -22,27 +22,32 @@
         "nvidia_modeset"
         "nvidia_uvm"
         "nvidia_drm"
-        "amdgpu"
+#        "amdgpu"
         "kvm-intel"
       ];
       services.xserver.videoDrivers = [
         "nvidia"
         "modesetting"
-        "fbdev"
+#        "fbdev"
       ];
       hardware.nvidia = {
 
-        modesetting.enable = true;
+ #       modesetting.enable = true;
         powerManagement.enable = false;
 
-        powerManagement.finegrained = false;
+ #       powerManagement.finegrained = false;
 
-        open = false;
+        open = true;
         nvidiaSettings = true;
+	modesetting.enable = true;
         package = config.boot.kernelPackages.nvidiaPackages.stable;
         prime = {
           nvidiaBusId = "PCI:45:0:0";
           intelBusId = "PCI:0:2:0";
+	  offload = {
+	    enable = true;
+	    enableOffloadCmd = true;
+	  };
         };
       };
     };
@@ -65,6 +70,9 @@
         "joydev"
         "xpad"
       ];
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+      };
     };
   };
 }

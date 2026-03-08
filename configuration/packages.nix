@@ -7,6 +7,7 @@ let
     ps: with ps; [
       requests
       pyquery # needed for hyprland-dots Weather script
+      pyside6
     ]
   );
 
@@ -16,7 +17,7 @@ in
 
   environment.systemPackages =
     (with pkgs; [
-      bc
+#      bc
       baobab
       btrfs-progs
       clang
@@ -25,13 +26,13 @@ in
       duf
       findutils
       ffmpeg   
-      glib #for gsettings to work
-      gsettings-qt
+ #     glib #for gsettings to work
+ #     gsettings-qt
       git
       killall  
       libappindicator
       libnotify
-      openssl #required by Rainbow borders
+ #     openssl #required by Rainbow borders
       pciutils
       neovim
       libqalculate
@@ -47,20 +48,20 @@ in
       platformio      
       # Hyprland Stuff
       #(ags.overrideAttrs (oldAttrs: { inherit (oldAttrs) pname; version = "1.8.2"; }))
-      ags # desktop overview  
+ #     ags # desktop overview  
       btop
       brightnessctl # for brightness control
       cava
       cliphist
       ghostty
       loupe
-      gnome-system-monitor
-      grim
-      gtk-engine-murrine #for gtk themes
+ #     gnome-system-monitor
+ #     grim
+ #     gtk-engine-murrine #for gtk themes
       hypridle
       imagemagick 
-      inxi
-      jq
+ #     inxi
+ #     jq
       kitty
       libsForQt5.qtstyleplugin-kvantum #kvantum
       networkmanagerapplet
@@ -71,25 +72,25 @@ in
       pavucontrol
       playerctl
       polkit_gnome
-      libsForQt5.qt5ct
-      kdePackages.qt6ct
-      kdePackages.qtwayland
-      kdePackages.qtstyleplugin-kvantum #kvantum
+#      libsForQt5.qt5ct
+#      kdePackages.qt6ct
+#      kdePackages.qtwayland
+#      kdePackages.qtstyleplugin-kvantum #kvantum
       #rofi-wayland
       #rofi-calc
-      slurp
-      swappy
-      swaynotificationcenter
-      swww
+#      slurp
+#      swappy
+      #swaynotificationcenter
+#      swww
       unzip
-      wallust
+ #     wallust
       wl-clipboard
       wlogout
       xarchiver
       yad
       yt-dlp
       #flatpak
-      waybar  # if wanted experimental next line
+      #waybar  # if wanted experimental next line
       #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
       #inputs.affinity-nix2.packages.x86_64-linux.photo
       #inputs.affinity-nix.packages.x86_64-linux.designer
@@ -107,6 +108,8 @@ in
       ledfx
       rofi-wayland
       hyprland-qt-support
+      dig
+      #python313Packages.pyside6
     ])
     ++ [
       python-packages

@@ -12,12 +12,27 @@ in {
     ./hardware.nix
     ./user.nix
     ./packages.nix
-    ./specialisation.nix
+#    ./specialisation.nix
     ./quickshell.nix
     ./terminal.nix
     ../modules/intel-drivers.nix
   ];
-
+#system.nixos.tags = ["igpu"];
+      boot.kernelModules = [
+        "thunderbolt"
+        "usbhid"
+        "joydev"
+        "xpad"
+        "kvm-intel"
+      ];
+      services.xserver.videoDrivers = [
+        "modesetting"
+        "fbdev"
+      ];
+ 
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+      };
   # BOOT related stuff
   boot = {
     kernelPackages = pkgs.linuxPackages_zen; # zen Kernel
@@ -37,7 +52,7 @@ in {
 
     initrd = {
       availableKernelModules =
-        [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+        [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "thunderbolt" "joydev" "xpad"];
       kernelModules = [ ];
     };
 
@@ -113,20 +128,20 @@ in {
   networking.timeServers = options.networking.timeServers.default
     ++ [ "pool.ntp.org" ];
   networking.firewall.checkReversePath = "loose";
-  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
-  environment.etc."resolv.conf".text = lib.mkForce ''
-    nameserver 192.168.1.10
-    nameserver 8.8.8.8
-    nameserver 1.1.1.1
-  '';
+  #networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  #environment.etc."resolv.conf".text = lib.mkForce ''
+  #  nameserver 192.168.1.10
+  #  nameserver 8.8.8.8
+  #  nameserver 1.1.1.1
+  #'';
 
-  services.resolved = {
-    enable = true;
-    dnssec = "false";
-    domains = [ "~." ];
-    fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
-    dnsovertls = "false";
-  };
+  #services.resolved = {
+  #  enable = true;
+  #  dnssec = "false";
+  #  domains = [ "~." ];
+    #fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
+  #  dnsovertls = "false";
+  #};
 
   # Set your time zone.
   # services.automatic-timezoned.enable = true; #based on IP location
@@ -248,13 +263,13 @@ in {
     upower.enable = true;
 
     gnome.gnome-keyring.enable = true;
-
-    #printing = {
-    #  enable = false;
+    
+    printing = {
+      enable = true;
     #  drivers = [
     # pkgs.hplipWithPlugin
     #  ];
-    #};
+    };
 
     #avahi = {
     #  enable = true;

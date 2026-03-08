@@ -12,6 +12,7 @@
 {
   imports = [
     inputs.spicetify-nix.nixosModules.default
+    ./orcaslicer.nix
   ];
 
   users.groups.kvm.members = [ "${username}" ];
@@ -51,7 +52,7 @@
         krabby
         discord
         gh
-        nextcloud-client
+        #nextcloud-client
         ungoogled-chromium
         qtcreator
         vmware-horizon-client
@@ -65,6 +66,10 @@
         blender
         wineWowPackages.stable
         winetricks
+	art
+	kicad-unstable
+	freecad
+	prismlauncher
       ];
     };
   };
@@ -75,6 +80,8 @@
   };
 
   programs = {
+    gpu-screen-recorder.enable = true;
+
     spicetify =
       let
         spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};

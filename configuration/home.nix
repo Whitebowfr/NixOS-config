@@ -37,6 +37,10 @@
     settings = import ../customisation/caelestia.nix;
   };
 
+  systemd.user.services.caelestia.Service.Environment = [
+    "QT_QPA_PLATFORMTHEME=gtk3"
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     #	plugins = [
@@ -61,16 +65,14 @@
       source=$HOME/.config/hypr/windowRules.conf 
       source=$HOME/.config/hypr/settings.conf 
 
-
-      # nwg-displays
-      source= $HOME/.config/hypr/monitors.conf
-      source= $HOME/.config/hypr/workspaces.conf
-
       exec-once = echo 0018:04F3:2F2C.0002 | sudo tee /sys/bus/hid/drivers/hid-multitouch/unbind
       env = AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1
       	'';
   };
 
+  services.nextcloud-client = {
+    enable = true;
+  };
 
   home.packages = [
     pkgs.hello

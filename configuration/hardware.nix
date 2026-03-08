@@ -10,7 +10,7 @@
     [ "xhci_pci" "thunderbolt" "vmd" "nvme" "sdhci_pci" ];
     
   boot.extraModulePackages = [ ];
-  boot.blacklistedKernelModules = [ "nouveau" ];
+#  boot.blacklistedKernelModules = [ "nouveau" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
@@ -53,7 +53,10 @@
     size = 16 * 1024;
   }];
   boot.resumeDevice = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-  boot.kernelParams = [ "resume_offset=131071" ];
+  boot.kernelParams = [ 
+    "resume_offset=131071"
+    "i915.force_probe=46a6"
+  ];
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
@@ -72,7 +75,15 @@
 
   # Install the driver
   #  services.fprintd.enable = true;
-  hardware.graphics = { enable = true; };
+  hardware.graphics = { 
+    enable = true; 
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt
+      intel-compute-runtime
+    ];
+  };
+
   services.hardware.bolt.enable = true;
-  hardware.graphics.enable32Bit = true;
+ #  hardware.graphics.enable32Bit = true;
 }
