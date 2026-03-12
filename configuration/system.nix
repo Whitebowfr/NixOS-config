@@ -180,7 +180,7 @@ in {
   # Services to start
   services = {
     xserver = {
-      enable = false;
+      enable = true;
       xkb = {
         layout = "us";
         variant = "";
@@ -190,7 +190,7 @@ in {
     desktopManager.plasma6.enable = true;
 
     displayManager.sddm.enable = true;
-    displayManager.sddm.wayland.enable = true;
+    displayManager.sddm.wayland.enable = false;
     greetd = {
       enable = true;
       vt = 3;
