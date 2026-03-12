@@ -41,6 +41,7 @@
         "usb"
         "wireshark"
         "plugdev"
+	"gamemode"
       ];
 
       packages = with pkgs; [
