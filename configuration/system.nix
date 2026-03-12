@@ -177,6 +177,8 @@ in {
     krdp
   ];
 
+  programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+
   # Services to start
   services = {
     xserver = {
