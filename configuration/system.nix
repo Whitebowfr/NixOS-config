@@ -25,14 +25,7 @@ in {
         "xpad"
         "kvm-intel"
       ];
-      services.xserver.videoDrivers = [
-        "modesetting"
-        "fbdev"
-      ];
- 
-      environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "iHD";
-      };
+     
   # BOOT related stuff
   boot = {
     kernelPackages = pkgs.linuxPackages_zen; # zen Kernel
@@ -44,7 +37,6 @@ in {
       "nowatchdog"
       "modprobe.blacklist=sp5100_tco" # watchdog for AMD
       "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
-      "nvidia-drm.modeset=1"
     ];
 
     # This is for OBS Virtual Cam Support
@@ -384,9 +376,6 @@ in {
     dockerCompat = false;
     defaultNetwork.settings.dns_enabled = false;
   };
-
-  # OpenGL
-  hardware.graphics = { enable = true; };
 
   console.keyMap = "us";
 

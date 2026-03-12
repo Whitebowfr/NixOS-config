@@ -65,23 +65,12 @@
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
+  #hardware.cpu.intel.updateMicrocode =
+  #  lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   systemd.services.fprintd = {
     wantedBy = [ "multi-user.target" ];
     serviceConfig.Type = "simple";
-  };
-
-  # Install the driver
-  #  services.fprintd.enable = true;
-  hardware.graphics = { 
-    enable = true; 
-    extraPackages = with pkgs; [
-      intel-media-driver
-      vpl-gpu-rt
-      intel-compute-runtime
-    ];
   };
 
   services.hardware.bolt.enable = true;

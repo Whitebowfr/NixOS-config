@@ -31,7 +31,7 @@
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
 
      quickshell = {
-        url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+        url = "git+https://git.outfoxxed.me/outfoxxed/quickshell?rev=a1a150fab00a93ea983aaca5df55304bc837f51b";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
@@ -81,7 +81,7 @@
               home-manager.useUserPackages = true;
 
               home-manager.extraSpecialArgs = specialArgs;
-              home-manager.backupFileExtension = ".oassss";
+              home-manager.backupFileExtension = "bkp";
 
               home-manager.users.whitebow = {inputs, ...}: { 
                 imports = [

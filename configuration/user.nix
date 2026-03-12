@@ -70,6 +70,8 @@
 	kicad-unstable
 	freecad
 	prismlauncher
+	maven
+	nodejs_24
       ];
     };
   };
@@ -80,8 +82,9 @@
   };
 
   programs = {
+    gamemode.enable = true;
     gpu-screen-recorder.enable = true;
-
+    java.enable = true;
     spicetify =
       let
         spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};

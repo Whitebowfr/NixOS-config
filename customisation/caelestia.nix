@@ -1,4 +1,5 @@
 {
+      appearance.anim.durations.scale = 0.4;
       general = {
         apps = {
           terminal = ["ghostty"];
@@ -11,29 +12,23 @@
         };
         background = {
           desktopClock.enabled = true;
-          visualiser.enabled = false;
+          visualiser.enabled = true;
+	  enabled = true;
         };
         bar = {
           clock.showIcon = true;
           status.showLockStatus = false;
         };
         lock.recolourLogo = true;
+	paths.wallpaperDir = "~/Pictures/wallpapers";
         launcher.actions = [
-            {
-                "name"= "Calculator";
-                "icon"= "calculate";
-                "description"= "Do simple math equations (powered by Qalc)";
-                "command"= ["autocomplete" "calc"];
-                "enabled"= true;
-                "dangerous"= false
-            }
             {
                 "name"= "Scheme";
                 "icon"= "palette";
                 "description"= "Change the current colour scheme";
                 "command"= ["autocomplete" "scheme"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Wallpaper";
@@ -41,7 +36,7 @@
                 "description"= "Change the current wallpaper";
                 "command"= ["autocomplete" "wallpaper"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Variant";
@@ -49,7 +44,7 @@
                 "description"= "Change the current scheme variant";
                 "command"= ["autocomplete" "variant"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Transparency";
@@ -57,7 +52,7 @@
                 "description"= "Change shell transparency";
                 "command"= ["autocomplete" "transparency"];
                 "enabled"= false;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Random";
@@ -65,7 +60,7 @@
                 "description"= "Switch to a random wallpaper";
                 "command"= ["caelestia" "wallpaper" "-r"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Light";
@@ -73,7 +68,7 @@
                 "description"= "Change the scheme to light mode";
                 "command"= ["setMode" "light"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Dark";
@@ -81,7 +76,7 @@
                 "description"= "Change the scheme to dark mode";
                 "command"= ["setMode" "dark"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Shutdown";
@@ -89,7 +84,7 @@
                 "description"= "Shutdown the system";
                 "command"= ["systemctl" "poweroff"];
                 "enabled"= true;
-                "dangerous"= true
+                "dangerous"= true;
             }
             {
                 "name"= "Reboot";
@@ -97,7 +92,7 @@
                 "description"= "Reboot the system";
                 "command"= ["systemctl" "reboot"];
                 "enabled"= true;
-                "dangerous"= true
+                "dangerous"= true;
             }
             {
                 "name"= "Logout";
@@ -105,7 +100,7 @@
                 "description"= "Log out of the current session";
                 "command"= ["loginctl" "terminate-user" ""];
                 "enabled"= true;
-                "dangerous"= true
+                "dangerous"= true;
             }
             {
                 "name"= "Lock";
@@ -113,7 +108,7 @@
                 "description"= "Lock the current session";
                 "command"= ["loginctl" "lock-session"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
             {
                 "name"= "Sleep";
@@ -121,8 +116,9 @@
                 "description"= "Suspend then hibernate";
                 "command"= ["systemctl" "suspend-then-hibernate"];
                 "enabled"= true;
-                "dangerous"= false
+                "dangerous"= false;
             }
         ];
-      }
+	services.weatherLocation = "Villeurbanne";
+      };
     }

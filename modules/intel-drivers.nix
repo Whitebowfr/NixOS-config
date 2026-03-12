@@ -6,23 +6,28 @@ let
   cfg = config.drivers.intel;
 in
 {
-  options.drivers.intel = {
-    enable = mkEnableOption "Enable Intel Graphics Drivers";
-  };
-
-  config = mkIf cfg.enable {
-    nixpkgs.config.packageOverrides = pkgs: {
-      vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
-    };
+    #nixpkgs.config.packageOverrides = pkgs: {
+    #  vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+    #};
 
     # OpenGL
     hardware.graphics = {
+      enable = true;
       extraPackages = with pkgs; [
         intel-media-driver
-        libvdpau-va-gl
-        libva
-			  libva-utils
+        vpl-gpu-rt
+	intel-compute-runtime
       ];
     };
-  };
+
+    environment.sessionVariables = {
+      LIBVA_DRIVER_NAME = "iHD";
+    };
+
+    services.thermald.enable = true;
+
+    boot.initrd.kernelModules = [ "modesetting" ];
+    boot.kernelModules = [ "kvm-intel" ];
+    services.xserver.videoDrivers = [ "i915" ];
+    boot.kernelParams = [ "i915.enable_guc=3" "i915.force_probe=46a6" ];
 }
