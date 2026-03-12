@@ -18,6 +18,7 @@ in
   environment.systemPackages =
     (with pkgs; [
 #      bc
+      xorg.xinit
       baobab
       btrfs-progs
       clang

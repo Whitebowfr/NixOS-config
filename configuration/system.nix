@@ -178,6 +178,9 @@ in {
   ];
 
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+  environment.shellAliases = {
+    plasma-x11 = "startx /run/current-system/sw/bin/startplasma-x11";
+  };
 
   # Services to start
   services = {
