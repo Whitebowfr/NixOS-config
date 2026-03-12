@@ -29,5 +29,5 @@ in
     boot.initrd.kernelModules = [ "i915" ];
     boot.kernelModules = [ "kvm-intel" ];
     services.xserver.videoDrivers = [ "modesetting" ];
-    boot.kernelParams = [ "i915.enable_guc=3" "i915.force_probe=46a6" ];
+    boot.kernelParams = [ "i915.enable_guc=3" "i915.force_probe=46a6" "i915.enable_psr=0" ];
 }
