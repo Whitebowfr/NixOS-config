@@ -21,11 +21,6 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    Hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
@@ -41,6 +36,11 @@
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    omnisearch = {
+      url = "git+https://git.alovely.space/Nyx/OmniSearch.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -74,7 +74,7 @@
 
           modules = [
             ./configuration/system.nix
-
+	    inputs.omnisearch.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

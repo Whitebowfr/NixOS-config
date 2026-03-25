@@ -13,10 +13,18 @@ in
     # OpenGL
     hardware.graphics = {
       enable = true;
+      enable32Bit = true;
+
       extraPackages = with pkgs; [
         intel-media-driver
         vpl-gpu-rt
-	intel-compute-runtime
+	      intel-compute-runtime
+        vulkan-loader
+        vulkan-validation-layers
+      ];
+
+      extraPackages32 = with pkgs; [
+        vulkan-loader
       ];
     };
 
@@ -25,9 +33,16 @@ in
     };
 
     services.thermald.enable = true;
+    hardware.enableRedistributableFirmware = lib.mkDefault true;
+    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
 
     boot.initrd.kernelModules = [ "i915" ];
     boot.kernelModules = [ "kvm-intel" ];
     services.xserver.videoDrivers = [ "modesetting" ];
-    boot.kernelParams = [ "i915.enable_guc=3" "i915.force_probe=46a6" "i915.enable_psr=0" ];
+    boot.kernelParams = [ 
+      "i915.enable_guc=3" 
+      #"i915.force_probe=46a6" 
+      "i915.enable_psr=0" 
+    ];
 }

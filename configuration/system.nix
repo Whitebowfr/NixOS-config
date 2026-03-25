@@ -178,24 +178,44 @@ in {
   ];
 
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
-  environment.shellAliases = {
-    plasma-x11 = "startx /run/current-system/sw/bin/startplasma-x11";
-  };
+
+  environment.systemPackages = lib.mkAfter [
+    (pkgs.writeShellScriptBin "plasma-x11-test" ''
+      set -euo pipefail
+
+      if [[ -n "''${WAYLAND_DISPLAY:-}" || -n "''${DISPLAY:-}" ]]; then
+        echo "Run this from a plain TTY (no DISPLAY/WAYLAND_DISPLAY)."
+        exit 1
+      fi
+
+      echo "Stopping greetd (releases seat0)..."
+      sudo systemctl stop greetd
+
+      cleanup() {
+        sudo systemctl start greetd >/dev/null 2>&1 || true
+      }
+      trap cleanup EXIT
+
+      # Important: start X11 via NixOS' startx integration
+      # This creates a proper logind session and fixes input on many setups.
+      exec startx ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-x11
+    '')
+  ];
 
   # Services to start
   services = {
     xserver = {
       enable = true;
+      displayManager.startx.enable = true;
       xkb = {
         layout = "us";
         variant = "";
       };
     };
+    libinput.enable = true;
     #displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
 
-    displayManager.sddm.enable = true;
-    displayManager.sddm.wayland.enable = false;
     greetd = {
       enable = true;
       vt = 3;
@@ -242,7 +262,6 @@ in {
       interval = "weekly";
     };
 
-    libinput.enable = true;
 
     rpcbind.enable = false;
     nfs.server.enable = false;

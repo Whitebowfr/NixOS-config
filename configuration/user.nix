@@ -12,6 +12,7 @@
 {
   imports = [
     inputs.spicetify-nix.nixosModules.default
+    inputs.omnisearch.nixosModules.omnisearch
     ./orcaslicer.nix
   ];
 
@@ -81,6 +82,8 @@
     enable = true;
     package = pkgs.mariadb_114;
   };
+
+  services.omnisearch.enable = true;
 
   programs = {
     gamemode.enable = true;
