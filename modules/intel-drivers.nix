@@ -1,9 +1,10 @@
 # 💫 https://github.com/JaKooLit 💫 #
 
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, inputs, ... }:
 with lib;
 let
   cfg = config.drivers.intel;
+  pkgs-hyprland = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
     #nixpkgs.config.packageOverrides = pkgs: {
@@ -14,6 +15,8 @@ in
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
+      package = pkgs-hyprland.mesa;
+      package32 = pkgs-hyprland.pkgsi686Linux.mesa;
 
       extraPackages = with pkgs; [
         intel-media-driver

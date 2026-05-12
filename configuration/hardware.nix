@@ -36,11 +36,11 @@
     options = [ "subvol=home" ];
   };
 
-  fileSystems."/bin" = {
-    device = "/usr/bin";
-    fsType = "none";
-    options = [ "bind" ];
-  };
+#  fileSystems."/bin" = {
+#    device = "/usr/bin";
+#    fsType = "none";
+#    options = [ "bind" ];
+#  };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/679B-1C1B";

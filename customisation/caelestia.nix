@@ -1,6 +1,7 @@
 {
       appearance.anim.durations.scale = 0.4;
       general = {
+        logo = "nixos";
         apps = {
           terminal = ["ghostty"];
           audio = ["pavucontrol"];

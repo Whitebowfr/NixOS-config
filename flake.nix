@@ -2,7 +2,8 @@
   description = "Whitebow's NixOS + Hyprland";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
 
     astal = {
@@ -35,18 +36,18 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    omnisearch = {
-      url = "git+https://git.alovely.space/Nyx/OmniSearch.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #omnisearch = {
+    #  url = "git+https://git.bwaaa.monster/omnisearch?ref=master";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
   };
 
   outputs =
-    inputs@{ self, nixpkgs, home-manager, ... }:
+    inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
       specialArgs = {inherit inputs;};
       system = "x86_64-linux";
@@ -74,14 +75,17 @@
 
           modules = [
             ./configuration/system.nix
-	    inputs.omnisearch.nixosModules.default
+	    #inputs.omnisearch.nixosModules.default
+	    #{
+		#services.omnisearch.enable = true;
+            #}
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
 
               home-manager.extraSpecialArgs = specialArgs;
-              home-manager.backupFileExtension = "bkp";
+              home-manager.backupFileExtension = "bkpp";
 
               home-manager.users.whitebow = {inputs, ...}: { 
                 imports = [

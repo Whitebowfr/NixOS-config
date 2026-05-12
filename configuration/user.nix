@@ -9,10 +9,15 @@
   inputs,
   ...
 }:
+let
+unstable = import inputs.nixpkgs-unstable {
+    system = pkgs.system;
+    config.allowUnfree = config.nixpkgs.config.allowUnfree or false;
+  };
+in
 {
   imports = [
     inputs.spicetify-nix.nixosModules.default
-    inputs.omnisearch.nixosModules.omnisearch
     ./orcaslicer.nix
   ];
 
@@ -47,45 +52,33 @@
 
       packages = with pkgs; [
         thunderbird
-        jellyflix
         vscode
         libreoffice
         git
         krabby
-        discord
+        webcord #discord
         gh
-        #nextcloud-client
         ungoogled-chromium
-        qtcreator
-        vmware-horizon-client
-        openconnect
         qucs-s
         steam-run
-        localsend
         digital
         heroic
-        gogdl
         blender
         wineWowPackages.stable
         winetricks
 	art
-	kicad-unstable
 	freecad
 	prismlauncher
 	maven
 	nodejs_24
+	unstable.kicad
+	zed-editor
       ];
     };
   };
 
-  services.mysql = {
-    enable = true;
-    package = pkgs.mariadb_114;
-  };
-
-  services.omnisearch.enable = true;
-
   programs = {
+    nix-ld.enable = true;
     gamemode.enable = true;
     gpu-screen-recorder.enable = true;
     java.enable = true;
@@ -116,8 +109,6 @@
       gamescopeSession.enable = true;
     };
 
-    pulseview.enable = true;
-
     gamescope = {
       enable = true;
       capSysNice = true;
@@ -126,11 +117,10 @@
     hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
-    #hyprlock.enable = true;
     git.enable = true;
     nm-applet.indicator = true;
 
@@ -143,11 +133,15 @@
       tumbler
     ];
 
-    file-roller.enable = true;
-
     xwayland.enable = true;
 
     dconf.enable = true;
+    dconf.profiles.user.databases = [{
+      settings."org/gnome/desktop/interface" = {
+        gtk-theme = "Adwaita";
+        icon-theme = "Flat-Remix-Red-Dark";
+      };
+    }];
     seahorse.enable = true;
     fuse.userAllowOther = true;
 
@@ -155,25 +149,5 @@
       enable = true;
       enableSSHSupport = true;
     };
-
-    # rofi = {
-    #   enable = true;
-    #   package = pkgs.rofi-wayland;
-    #   theme = /home/whitebow/.config/rofi/themes/KooL_style-5.rasi;
-    #   font = "JetBrainsMono Nerd Font SemiBold 13";
-    # };
   };
-
-  # Extra Portal Configuration
-  # xdg.portal = {
-  #   enable = true;
-  #   wlr.enable = false;
-  #   extraPortals = [
-  #     pkgs.xdg-desktop-portal-gtk
-  #   ];
-  #   configPackages = [
-  #     pkgs.xdg-desktop-portal-gtk
-  #     pkgs.xdg-desktop-portal
-  #   ];
-  # };
 }

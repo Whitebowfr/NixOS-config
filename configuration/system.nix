@@ -17,7 +17,6 @@ in {
     ./terminal.nix
     ../modules/intel-drivers.nix
   ];
-#system.nixos.tags = ["igpu"];
       boot.kernelModules = [
         "thunderbolt"
         "usbhid"
@@ -28,8 +27,7 @@ in {
      
   # BOOT related stuff
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen; # zen Kernel
-    #kernelPackages = pkgs.linuxPackages_latest; # Kernel 
+    kernelPackages = pkgs.linuxPackages_zen;
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
@@ -96,7 +94,7 @@ in {
     };
 
     plymouth = {
-      enable = true;
+      enable = false;
       theme = "red_loader";
       themePackages = with pkgs;
         [
@@ -141,6 +139,15 @@ in {
   #https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time.timeZone = "Europe/Paris"; # Set local timezone
 
+  i18n.inputMethod = {
+    type = "fcitx5";
+    enable = true;
+    fcitx5.waylandFrontend = true;
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-gtk
+    ];
+  };
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "fr_FR.UTF-8/UTF-8" ];
@@ -175,6 +182,7 @@ in {
     kate
     dolphin-plugins
     krdp
+    kwallet
   ];
 
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
@@ -207,6 +215,7 @@ in {
     xserver = {
       enable = true;
       displayManager.startx.enable = true;
+      desktopManager.runXdgAutostartIfNone = true;
       xkb = {
         layout = "us";
         variant = "";
@@ -218,7 +227,7 @@ in {
 
     greetd = {
       enable = true;
-      vt = 3;
+      #vt = 3;
       settings = {
         initial_session = {
           user = username;
@@ -254,7 +263,7 @@ in {
       enable = true;
       packages = [ pkgs.libsigrok ];
     };
-    envfs.enable = true;
+    #envfs.enable = true;
     dbus.enable = true;
 
     fstrim = {

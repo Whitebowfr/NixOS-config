@@ -17,7 +17,6 @@ in
 
   environment.systemPackages =
     (with pkgs; [
-#      bc
       xorg.xinit
       baobab
       btrfs-progs
@@ -27,13 +26,11 @@ in
       duf
       findutils
       ffmpeg   
- #     glib #for gsettings to work
- #     gsettings-qt
+      file-roller
       git
       killall  
       libappindicator
       libnotify
- #     openssl #required by Rainbow borders
       pciutils
       neovim
       libqalculate
@@ -42,28 +39,16 @@ in
       xdg-utils
       dysk
       protonvpn-gui
-      protonvpn-cli
       fastfetch
       (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-      #ranger
       platformio      
-      # Hyprland Stuff
-      #(ags.overrideAttrs (oldAttrs: { inherit (oldAttrs) pname; version = "1.8.2"; }))
- #     ags # desktop overview  
       btop
       brightnessctl # for brightness control
       cava
-      cliphist
       ghostty
       loupe
- #     gnome-system-monitor
- #     grim
- #     gtk-engine-murrine #for gtk themes
       hypridle
       imagemagick 
- #     inxi
- #     jq
-      kitty
       libsForQt5.qtstyleplugin-kvantum #kvantum
       networkmanagerapplet
       nwg-displays
@@ -73,44 +58,23 @@ in
       pavucontrol
       playerctl
       polkit_gnome
-#      libsForQt5.qt5ct
-#      kdePackages.qt6ct
-#      kdePackages.qtwayland
-#      kdePackages.qtstyleplugin-kvantum #kvantum
-      #rofi-wayland
-      #rofi-calc
-#      slurp
-#      swappy
-      #swaynotificationcenter
-#      swww
-      unzip
- #     wallust
-      wl-clipboard
       wlogout
-      xarchiver
       yad
       yt-dlp
-      #flatpak
-      #waybar  # if wanted experimental next line
-      #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-      #inputs.affinity-nix2.packages.x86_64-linux.photo
-      #inputs.affinity-nix.packages.x86_64-linux.designer
       tinymist
       wireshark
       librewolf
-      gnome-boxes
       dnsmasq
       phodav
       inkscape-with-extensions
       nmap
       wireguard-tools
-      teams-for-linux
       hyperhdr
       ledfx
-      rofi-wayland
       hyprland-qt-support
       dig
-      #python313Packages.pyside6
+      clang-tools
+      jdt-language-server
     ])
     ++ [
       python-packages
@@ -122,8 +86,6 @@ in
     font-awesome
     terminus_font
     roboto
-    nerd-fonts.jetbrains-mono # unstable
-    nerd-fonts.fira-code # unstable
-    nerd-fonts.fantasque-sans-mono # unstable
+    nerd-fonts.jetbrains-mono
   ];
 }
