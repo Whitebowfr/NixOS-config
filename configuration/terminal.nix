@@ -1,6 +1,3 @@
-# 💫 https://github.com/JaKooLit 💫 #
-# Users - NOTE: Packages defined on this will be on current user only
-
 {
   pkgs,
   ...
@@ -32,7 +29,7 @@
                 fastfetch -c $HOME/.config/fastfetch/config-v3.jsonc
 
                 #pokemon colorscripts like. Make sure to install krabby package
-                # krabby random --no-title -s; 
+                # krabby random --no-title -s;
 
                 # Set-up icons for files/directories in terminal using lsd
                 alias ls='lsd'

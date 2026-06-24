@@ -8,7 +8,7 @@
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "thunderbolt" "vmd" "nvme" "sdhci_pci" ];
-    
+
   boot.extraModulePackages = [ ];
 #  boot.blacklistedKernelModules = [ "nouveau" ];
 
@@ -36,12 +36,6 @@
     options = [ "subvol=home" ];
   };
 
-#  fileSystems."/bin" = {
-#    device = "/usr/bin";
-#    fsType = "none";
-#    options = [ "bind" ];
-#  };
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/679B-1C1B";
     fsType = "vfat";
@@ -53,13 +47,10 @@
     size = 16 * 1024;
   }];
   boot.resumeDevice = "/dev/disk/by-uuid/02fffffe-5088-4669-ae88-66fff0cefe89";
-  boot.kernelParams = [ 
+  boot.kernelParams = [
     "resume_offset=131071"
   ];
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

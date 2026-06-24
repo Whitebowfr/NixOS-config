@@ -2,20 +2,9 @@
   description = "Whitebow's NixOS + Hyprland";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
-
-    astal = {
-      url = "github:aylur/astal";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ags = {
-      url = "github:aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.astal.follows = "astal";
-    };
 
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -33,17 +22,14 @@
 
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
-    };
-
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #omnisearch = {
-    #  url = "git+https://git.bwaaa.monster/omnisearch?ref=master";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
@@ -75,10 +61,6 @@
 
           modules = [
             ./configuration/system.nix
-	    #inputs.omnisearch.nixosModules.default
-	    #{
-		#services.omnisearch.enable = true;
-            #}
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -87,7 +69,7 @@
               home-manager.extraSpecialArgs = specialArgs;
               home-manager.backupFileExtension = "bkpp";
 
-              home-manager.users.whitebow = {inputs, ...}: { 
+              home-manager.users.whitebow = {inputs, ...}: {
                 imports = [
                   inputs.caelestia-shell.homeManagerModules.default
                   ./configuration/home.nix

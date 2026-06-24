@@ -11,7 +11,7 @@
     qt6.qtwayland
     qt6.qtdeclarative
     qt6.qtsvg
-
+  
     # alternate options
         # libsForQt5.qt5compat
         kdePackages.qt5compat

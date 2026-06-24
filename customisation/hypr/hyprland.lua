@@ -1,0 +1,6 @@
+require(".keybinds")
+require(".settings")
+require(".monitors")
+require(".startup")
+require(".shortcuts")
+require(".windowRules")

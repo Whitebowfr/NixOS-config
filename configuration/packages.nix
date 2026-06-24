@@ -17,7 +17,7 @@ in
 
   environment.systemPackages =
     (with pkgs; [
-      xorg.xinit
+      xinit
       baobab
       btrfs-progs
       clang
@@ -38,7 +38,7 @@ in
       xdg-user-dirs
       xdg-utils
       dysk
-      protonvpn-gui
+      proton-vpn
       fastfetch
       (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
       platformio      
@@ -66,7 +66,7 @@ in
       librewolf
       dnsmasq
       phodav
-      inkscape-with-extensions
+      inkscape
       nmap
       wireguard-tools
       hyperhdr
@@ -75,6 +75,11 @@ in
       dig
       clang-tools
       jdt-language-server
+      gsettings-desktop-schemas
+
+      xfce4-exo
+      mousepad
+      swappy
     ])
     ++ [
       python-packages
@@ -87,5 +92,14 @@ in
     terminus_font
     roboto
     nerd-fonts.jetbrains-mono
+    dejavu_fonts
+    liberation_ttf
   ];
+
+  fonts.fontconfig = {
+    enable = true;
+    antialias = true;
+    #hinting = "slight";
+    #subpixelRendering = "rgb";
+  };
 }

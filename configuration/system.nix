@@ -1,12 +1,7 @@
-# 💫 https://github.com/JaKooLit 💫 #
-# Main default config
 
-# NOTE!!! : Packages and Fonts are configured in packages-&-fonts.nix
-
-{ config, pkgs, host, username, options, lib, system, ... }:
+{ config, pkgs, host, username, options, lib, system, inputs, ... }:
 let
-
-  #home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz; 
+  #home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz;
 in {
   imports = [
     ./hardware.nix
@@ -24,7 +19,7 @@ in {
         "xpad"
         "kvm-intel"
       ];
-     
+
   # BOOT related stuff
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
@@ -45,15 +40,6 @@ in {
         [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "thunderbolt" "joydev" "xpad"];
       kernelModules = [ ];
     };
-
-    # Needed For Some Steam Games
-    #kernel.sysctl = {
-    #  "vm.max_map_count" = 2147483642;
-    #};
-
-    ## BOOT LOADERS: NOTE USE ONLY 1. either systemd or grub  
-    # Bootloader SystemD
-    #loader.systemd-boot.enable = true;
 
     loader.efi = {
       #efiSysMountPoint = "/efi"; #this is if you have separate /efi partition
@@ -118,25 +104,7 @@ in {
   networking.timeServers = options.networking.timeServers.default
     ++ [ "pool.ntp.org" ];
   networking.firewall.checkReversePath = "loose";
-  #networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
-  #environment.etc."resolv.conf".text = lib.mkForce ''
-  #  nameserver 192.168.1.10
-  #  nameserver 8.8.8.8
-  #  nameserver 1.1.1.1
-  #'';
-
-  #services.resolved = {
-  #  enable = true;
-  #  dnssec = "false";
-  #  domains = [ "~." ];
-    #fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
-  #  dnsovertls = "false";
-  #};
-
-  # Set your time zone.
-  # services.automatic-timezoned.enable = true; #based on IP location
-
-  #https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  systemd.services.NetworkManager-wait-online.enable = false;
   time.timeZone = "Europe/Paris"; # Set local timezone
 
   i18n.inputMethod = {
@@ -231,12 +199,12 @@ in {
       settings = {
         initial_session = {
           user = username;
-          command = "Hyprland";
+          command = "start-hyprland";
           # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --cmd Hyprland"; # start Hyprland with a TUI login manager
         };
         default_session = {
           user = username;
-          command = "Hyprland";
+          command = "start-hyprland";
         };
         #default_session = initial_session;
       };
@@ -288,29 +256,21 @@ in {
     upower.enable = true;
 
     gnome.gnome-keyring.enable = true;
-    
+
     printing = {
       enable = true;
     #  drivers = [
     # pkgs.hplipWithPlugin
     #  ];
     };
+  };
 
-    #avahi = {
-    #  enable = true;
-    #  nssmdns4 = true;
-    #  openFirewall = true;
-    #};
-
-    #ipp-usb.enable = true;
-
-    #syncthing = {
-    #  enable = false;
-    #  user = "${username}";
-    #  dataDir = "/home/${username}";
-    #  configDir = "/home/${username}/.config/syncthing";
-    #};
-
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    xwayland.enable = true;
+    withUWSM = true;
   };
 
   systemd.services.flatpak-repo = {
@@ -333,12 +293,6 @@ in {
     enable = true;
     cpuFreqGovernor = "schedutil";
   };
-
-  #hardware.sane = {
-  #  enable = true;
-  #  extraBackends = [ pkgs.sane-airscan ];
-  #  disabledDefaultBackends = [ "escl" ];
-  #};
 
   # Extra Logitech Support
   hardware.logitech.wireless.enable = false;
@@ -415,18 +369,9 @@ in {
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
-
+  environment.sessionVariables = {
+    WINEPREFIX = "${pkgs.wine}/share/wine";
+    WINEARCH = "win64";
+    WINE_DPI_SCALE = "3";
+  };
 }

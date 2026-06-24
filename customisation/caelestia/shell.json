@@ -1,0 +1,138 @@
+{
+    "appearance": {
+        "anim": {
+            "durations": {
+                "scale": 0.4
+            }
+        },
+        "deformScale": 0.3,
+        "padding": {
+            "scale": 0.9833184627525083
+        },
+        "rounding": {
+            "scale": 0.9741294063738922
+        },
+        "transparency": {
+            "enabled": true
+        }
+    },
+    "background": {
+        "desktopClock": {
+            "background": {
+                "blur": false,
+                "enabled": false
+            },
+            "enabled": true,
+            "position": "top-right",
+            "scale": 1.5
+        },
+        "enabled": true,
+        "visualiser": {
+            "enabled": false
+        }
+    },
+    "bar": {
+        "activeWindow": {
+            "compact": true
+        },
+        "clock": {
+            "background": false,
+            "showDate": false,
+            "showIcon": false
+        },
+        "persistent": false,
+        "scrollActions": {
+            "brightness": false,
+            "volume": false,
+            "workspaces": true
+        },
+        "status": {
+            "showAudio": true,
+            "showLockStatus": false,
+            "showNetwork": true,
+            "showWifi": true
+        },
+        "tray": {
+            "compact": true
+        },
+        "workspaces": {
+            "activeTrail": true,
+            "maxWindowIcons": 3,
+            "occupiedBg": false,
+            "occupiedLabel": "",
+            "shown": 10
+        }
+    },
+    "dashboard": {
+        "resourceUpdateInterval": 1500
+    },
+    "general": {
+        "apps": {
+            "audio": [
+                "pavucontrol"
+            ],
+            "explorer": [
+                "thunar"
+            ],
+            "terminal": [
+                "ghostty"
+            ]
+        },
+        "idle": {
+            "inhibitWhenAudio": true,
+            "lockBeforeSleep": true
+        },
+        "logo": "caelestia"
+    },
+    "launcher": {
+        "favouriteApps": [
+        ],
+        "hiddenApps": [
+            "wine-Programs-Apple Software Update",
+            "org.kde.spectacle",
+            "thunar-settings",
+            "xterm",
+            "wine-Programs-iTunes-About iTunes",
+            "blueman-adapters",
+            "thunar-bulk-rename",
+            "wine-Programs-LTspice-Check for updates",
+            "Counter-Strike 2",
+            "org.kde.drkonqi.coredump.gui",
+            "org.gnome.baobab",
+            "org.fcitx.fcitx5-migrator",
+            "org.kde.khelpcenter",
+            "yad-icon-browser",
+            "org.kde.kinfocenter",
+            "wine-Programs-iTunes-iTunes",
+            "kdesystemsettings",
+            "kbd-layout-viewer5",
+            "org.kde.kwalletmanager",
+            "org.kde.kmenuedit",
+            "nvtop",
+            "org.kde.qrca",
+            "org.gnome.seahorse.Application",
+            "Surviving Mars",
+            "wine-Programs-LTspice-Uninstall LTspice 24.1.10.4",
+            "wine-Programs-WinISD",
+            "wine-Programs-杰理工具包-杰理SDK工具",
+            "yad-settings",
+            "wine-Programs-杰理工具包-检查更新",
+            "wine-Programs-杰理工具包-杰理包管理器",
+            "org.badkiko.sofl",
+            "com.protonvpn.www"
+        ],
+        "showOnHover": false,
+        "useFuzzy": {
+            "apps": true
+        }
+    },
+    "notifs": {
+        "defaultExpireTimeout": 2500,
+        "fullscreen": "off"
+    },
+    "utilities": {
+        "toasts": {
+            "nowPlaying": true
+        }
+    }
+}

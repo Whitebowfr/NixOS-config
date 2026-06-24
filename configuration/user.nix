@@ -1,6 +1,3 @@
-# 💫 https://github.com/JaKooLit 💫 #
-# Users - NOTE: Packages defined on this will be on current user only
-
 {
   pkgs,
   username,
@@ -10,8 +7,8 @@
   ...
 }:
 let
-unstable = import inputs.nixpkgs-unstable {
-    system = pkgs.system;
+  unstable = import inputs.nixpkgs-unstable {
+    system = pkgs.stdenv.hostPlatform.system;
     config.allowUnfree = config.nixpkgs.config.allowUnfree or false;
   };
 in
@@ -22,9 +19,13 @@ in
   ];
 
   users.groups.kvm.members = [ "${username}" ];
-  users.groups.libvirtd.members = [ "${username}" ];
+  #users.groups.libvirtd.members = [ "${username}" ];
 
-  virtualisation.libvirtd = {
+  #virtualisation.libvirtd = {
+  #  enable = true;
+  #};
+
+  virtualisation.docker = {
     enable = true;
   };
 
@@ -47,7 +48,8 @@ in
         "usb"
         "wireshark"
         "plugdev"
-	"gamemode"
+        "gamemode"
+	"docker"
       ];
 
       packages = with pkgs; [
@@ -64,18 +66,33 @@ in
         digital
         heroic
         blender
-        wineWowPackages.stable
+        wineWow64Packages.waylandFull
         winetricks
-	art
-	freecad
-	prismlauncher
-	maven
-	nodejs_24
-	unstable.kicad
-	zed-editor
+       	art
+       	freecad
+       	prismlauncher
+       	nodejs_24
+       	unstable.kicad
+       	zed-editor
+      	kiwix
+	krita
       ];
     };
   };
+
+
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      #xdg-desktop-portal-hyprland
+    ];
+    config.common.default = ["hyprland" "gtk" ];
+  };
+
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
 
   programs = {
     nix-ld.enable = true;
@@ -92,12 +109,14 @@ in
         colorScheme = "mocha";
         enabledExtensions = with spicePkgs.extensions; [
           shuffle
-          fullAppDisplayMod
+          fullAppDisplay
+          betterGenres
+          adblock
+          aiBandBlocker
         ];
         enabledCustomApps = with spicePkgs.apps; [
           newReleases
           lyricsPlus
-          marketplace
         ];
       };
 
@@ -106,33 +125,21 @@ in
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-      gamescopeSession.enable = true;
+      gamescopeSession.enable = false; # Temporary issue fix
     };
 
     gamescope = {
-      enable = true;
-      capSysNice = true;
-    };
-
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      xwayland.enable = true;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      enable = false;
+      capSysNice = false;
     };
 
     git.enable = true;
     nm-applet.indicator = true;
 
-    thunar.enable = true;
-    thunar.plugins = with pkgs.xfce; [
-      exo
-      mousepad
-      thunar-archive-plugin
-      thunar-volman
-      tumbler
-    ];
-
+    thunar = {
+      enable = true;
+      plugins = with pkgs; [ thunar-archive-plugin thunar-volman ];
+    };
     xwayland.enable = true;
 
     dconf.enable = true;

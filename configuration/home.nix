@@ -5,9 +5,13 @@
   inputs,
   ...
 }:
+let
+  dotfiles = "${config.home.homeDirectory}/NixOS-config/customisation";
+  create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
+in
 {
-  home.stateVersion = "24.11";
-  
+  home.stateVersion = "26.05";
+
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
@@ -19,6 +23,9 @@
       "x-scheme-handler/unknown" = [ "librewolf.desktop" ];
       "application/pdf" = [ "librewolf.desktop" ];
       "inode/directory" = [ "thunar.desktop" ];
+      "image/jpeg" = [ "loupe.desktop" ];
+      "image/png" = [ "loupe.desktop" ];
+      "image/heic" = [ "loupe.desktop" ];
     };
   };
   programs.home-manager = {
@@ -27,10 +34,29 @@
 
   programs.caelestia = {
     enable = true;
-#    package = inputs.caelestia-shell.packages.x86_64-linux.with-cli.override {xkeyboard-config = pkgs.xkeyboard_config;}; 
+#    package = inputs.caelestia-shell.packages.x86_64-linux.with-cli.override {xkeyboard-config = pkgs.xkeyboard_config;};
     package = inputs.caelestia-shell.packages.x86_64-linux.with-cli;
-    settings = import ../customisation/caelestia.nix;
+    #settings = import ../customisation/caelestia.nix;
+    cli.enable = true;
   };
+
+  xdg.configFile."caelestia"={
+    source = create_symlink "${dotfiles}/caelestia";
+    force = true;
+    recursive = true;
+  };
+
+  xdg.configFile."hypr" = {
+    source = create_symlink "${dotfiles}/hypr";
+    force = true;
+    recursive = true;
+  };
+
+xdg.configFile = {
+  "gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
+  "gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
+  "gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
+};
 
   programs.direnv = {
     enable = true;
@@ -42,31 +68,43 @@
     "QT_QPA_PLATFORMTHEME=gtk3"
   ];
 
-  wayland.windowManager.hyprland = {
+/*  wayland.windowManager.hyprland = {
     enable = true;
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    #portalPackage = null;
+    #package = null;
+    xwayland.enable = true;
     settings = {
       debug.disable_logs = false;
     };
     extraConfig = ''
+$config = $HOME/.config/hypr
+source=$config/settings.conf
+source=$config/keybinds.conf
+source=$config/startup.conf
+source=$config/monitors.conf
+source=$config/shortcuts.conf
+#require(".keybinds")
+#require(".shortcuts")
+#require(".startup")
+#require(".monitors")
+#require(".windowRules")
+#require(".settings")
 
-      source=$HOME/.config/hypr/keybinds.conf 
-      source=$HOME/.config/hypr/shortcuts.conf 
-      source=$HOME/.config/hypr/startup.conf 
-      source=$HOME/.config/hypr/monitors.conf 
-      source=$HOME/.config/hypr/windowRules.conf 
-      source=$HOME/.config/hypr/settings.conf 
-
-      exec-once = echo 0018:04F3:2F2C.0002 | sudo tee /sys/bus/hid/drivers/hid-multitouch/unbind
-      env = AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1
-      	'';
-  };
+#hl.env("AQ_DRM_DEVICES", "/dev/dri/card0:/dev/dri/card1")
+#hl.config({
+#    debug = {
+#        disable_logs = false,
+#    },
+#})
+'';
+  };*/
 
   services.nextcloud-client = {
     enable = true;
   };
-
+  
   gtk = {
     enable = true;
     iconTheme = {
