@@ -15,7 +15,8 @@ in
 {
   imports = [
     inputs.spicetify-nix.nixosModules.default
-    ./orcaslicer.nix
+    ./programs/orcaslicer.nix
+    ./programs/neovim.nix
   ];
 
   users.groups.kvm.members = [ "${username}" ];
@@ -76,6 +77,9 @@ in
        	zed-editor
       	kiwix
 	krita
+	qbittorrent
+	inkscape
+	librewolf
       ];
     };
   };

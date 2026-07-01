@@ -32,7 +32,6 @@ in
       libappindicator
       libnotify
       pciutils
-      neovim
       libqalculate
       wget
       xdg-user-dirs
@@ -41,10 +40,8 @@ in
       proton-vpn
       fastfetch
       (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-      platformio      
       btop
       brightnessctl # for brightness control
-      cava
       ghostty
       loupe
       hypridle
@@ -58,15 +55,10 @@ in
       pavucontrol
       playerctl
       polkit_gnome
-      wlogout
-      yad
       yt-dlp
       tinymist
-      wireshark
-      librewolf
       dnsmasq
       phodav
-      inkscape
       nmap
       wireguard-tools
       hyperhdr
