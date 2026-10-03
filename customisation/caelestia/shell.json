@@ -33,38 +33,70 @@
     },
     "bar": {
         "activeWindow": {
-            "compact": true
+            "compact": true,
+            "inverted": false
         },
         "clock": {
-            "background": false,
-            "showDate": false,
+            "background": true,
+            "showDate": true,
             "showIcon": false
         },
         "persistent": false,
+        "popouts": {
+            "activeWindow": false
+        },
         "scrollActions": {
             "brightness": false,
             "volume": false,
             "workspaces": true
         },
-        "status": {
-            "showAudio": true,
-            "showLockStatus": false,
-            "showNetwork": true,
-            "showWifi": true
-        },
+        "statusIcons": [
+            {
+                "enabled": false,
+                "id": "lockStatus"
+            },
+            {
+                "enabled": false,
+                "id": "audio"
+            },
+            {
+                "enabled": false,
+                "id": "microphone"
+            },
+            {
+                "enabled": false,
+                "id": "kbLayout"
+            },
+            {
+                "enabled": true,
+                "id": "network"
+            },
+            {
+                "enabled": true,
+                "id": "bluetooth"
+            },
+            {
+                "enabled": true,
+                "id": "battery"
+            }
+        ],
         "tray": {
-            "compact": true
+            "background": true,
+            "compact": true,
+            "recolour": false
         },
         "workspaces": {
             "activeTrail": true,
             "maxWindowIcons": 3,
             "occupiedBg": false,
             "occupiedLabel": "",
+            "showWindows": false,
             "shown": 10
         }
     },
     "dashboard": {
-        "resourceUpdateInterval": 1500
+        "resourceUpdateInterval": 1500,
+        "showOnHover": true
     },
     "general": {
         "apps": {
@@ -85,6 +117,7 @@
         "logo": "caelestia"
     },
     "launcher": {
+        "enableDangerousActions": true,
         "favouriteApps": [
         ],
         "hiddenApps": [
@@ -123,16 +156,84 @@
         ],
         "showOnHover": false,
         "useFuzzy": {
+            "actions": true,
             "apps": true
-        }
+        },
+        "vimKeybinds": true
     },
     "notifs": {
         "defaultExpireTimeout": 2500,
-        "fullscreen": "off"
+        "fullscreen": "Off"
     },
     "utilities": {
+        "quickToggles": [
+            {
+                "enabled": true,
+                "id": "wifi"
+            },
+            {
+                "enabled": true,
+                "id": "bluetooth"
+            },
+            {
+                "enabled": true,
+                "id": "mic"
+            },
+            {
+                "enabled": true,
+                "id": "settings"
+            },
+            {
+                "enabled": false,
+                "id": "gameMode"
+            },
+            {
+                "enabled": false,
+                "id": "dnd"
+            },
+            {
+                "enabled": true,
+                "id": "vpn"
+            }
+        ],
         "toasts": {
             "nowPlaying": true
+        },
+        "vpn": {
+            "enabled": false,
+            "provider": [
+                {
+                    "connectCmd": [
+                        "sudo",
+                        "openconnect",
+                        "https://sslvpn.cisr.fr/",
+                        "-q",
+                        "--user=cgranier@insa-lyon.fr",
+                        "--authgroup=INSA"
+                    ],
+                    "displayName": "Openconnect",
+                    "id": "vpn-msho2zk5-5208r",
+                    "interface": "tun1",
+                    "name": "openconnect"
+                },
+                {
+                    "connectCmd": [
+                        "protonvpn",
+                        "connect",
+                        "--country",
+                        "BE"
+                    ],
+                    "disconnectCmd": [
+                        "protonvpn",
+                        "disconnect"
+                    ],
+                    "displayName": "Protonvpn",
+                    "id": "vpn-mshoexrt-b27c",
+                    "interface": "proton0",
+                    "name": "protonvpn"
+                }
+            ],
+            "selectedProvider": "vpn-mshoexrt-b27c"
         }
     }
 }

@@ -5,4 +5,5 @@ hl.monitor({
     scale = "1.5",
 })
 
-hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
+hl.monitor({ output = "HDMI-A-2", mode = "preferred", position = "auto", scale = "auto"  })
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "2"  })

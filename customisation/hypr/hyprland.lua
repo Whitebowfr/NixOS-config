@@ -1,4 +1,5 @@
 require(".keybinds")
+require(".animations")
 require(".settings")
 require(".monitors")
 require(".startup")

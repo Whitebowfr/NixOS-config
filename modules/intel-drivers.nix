@@ -4,6 +4,10 @@
 with lib;
 let
   cfg = config.drivers.intel;
+  unstable = import inputs.nixpkgs-unstable {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfree = config.nixpkgs.config.allowUnfree or false;
+  };
   pkgs-hyprland = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
@@ -15,8 +19,8 @@ in
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      package = pkgs-hyprland.mesa;
-      package32 = pkgs-hyprland.pkgsi686Linux.mesa;
+      package = pkgs.mesa;
+      package32 = pkgs.pkgsi686Linux.mesa;
 
       extraPackages = with pkgs; [
         intel-media-driver
@@ -42,10 +46,21 @@ in
 
     boot.initrd.kernelModules = [ "i915" ];
     boot.kernelModules = [ "kvm-intel" ];
-    services.xserver.videoDrivers = [ "modesetting" ];
+    services.xserver.videoDrivers = [ "modesetting" "nvidia"];
+    hardware.nvidia = {
+      modesetting.enable = true;
+      open = false;
+      #prime = {
+      #  reverseSync.enable = true;
+      #  intelBusId = "PCI:0@0:2:0";
+      #  nvidiaBusId = "PCI:45@0:0:0";
+      #};
+    };
     boot.kernelParams = [ 
-      "i915.enable_guc=3" 
+      "i915.enable_guc=0" 
       #"i915.force_probe=46a6" 
-      "i915.enable_psr=0" 
+      "i915.enable_psr=0"
+      "pci=realloc"
+      "thunderbolt.clx=0"
     ];
 }

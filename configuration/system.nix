@@ -11,18 +11,17 @@ in {
     ./quickshell.nix
     ./terminal.nix
     ../modules/intel-drivers.nix
+    ../modules/nvidia-drivers.nix
   ];
-      boot.kernelModules = [
+  boot = {
+    kernelPackages = pkgs.linuxPackages;
+
+    kernelModules = [
         "thunderbolt"
         "usbhid"
         "joydev"
         "xpad"
-        "kvm-intel"
       ];
-
-  # BOOT related stuff
-  boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
@@ -30,16 +29,11 @@ in {
       "nowatchdog"
       "modprobe.blacklist=sp5100_tco" # watchdog for AMD
       "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
+      "snd_intel_dspcfg.dsp_driver=3"
     ];
 
-    # This is for OBS Virtual Cam Support
-    #  extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
-    initrd = {
-      availableKernelModules =
-        [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "thunderbolt" "joydev" "xpad"];
-      kernelModules = [ ];
-    };
+    initrd.kernelModules = ["thunderbolt" "usbhid" "joydev" "xpad" ];
 
     loader.efi = {
       #efiSysMountPoint = "/efi"; #this is if you have separate /efi partition
@@ -57,11 +51,8 @@ in {
       memtest86.enable = true;
       #  extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
+      useOSProber = true;
     };
-
-    # Bootloader GRUB theme, configure below
-
-    ## -end of BOOTLOADERS----- ##
 
     # Make /tmp a tmpfs
     tmp = {
@@ -77,18 +68,6 @@ in {
       offset = 0;
       mask = "\\xff\\xff\\xff\\xff\\x00\\x00\\x00\\x00\\xff\\xff\\xff";
       magicOrExtension = "\\x7fELF....AI\\x02";
-    };
-
-    plymouth = {
-      enable = false;
-      theme = "red_loader";
-      themePackages = with pkgs;
-        [
-          # By default we would install all themes
-          (adi1090x-plymouth-themes.override {
-            selected_themes = [ "red_loader" ];
-          })
-        ];
     };
   };
 
@@ -156,6 +135,43 @@ in {
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
 
   environment.systemPackages = lib.mkAfter [
+    (pkgs.writeShellScriptBin "nvidia-egpu-check" ''
+      #!/usr/bin/env bash
+      # Check if RTX eGPU is available and try to detect its bus ID
+      echo "=== Thunderbolt Status ==="
+      boltctl list 2>/dev/null || echo "boltctl not available"
+      
+      echo ""
+      echo "=== NVIDIA GPU Detection ==="
+      if command -v nvidia-smi &> /dev/null; then
+        nvidia-smi || echo "nvidia-smi failed - check if driver is loaded"
+      else
+        echo "nvidia-smi not found"
+      fi
+      
+      echo ""
+      echo "=== Kernel Module Status ==="
+      lsmod 2>/dev/null | grep -i nvidia || echo "NVIDIA modules not loaded"
+      
+      echo ""
+      echo "=== PCIe Bridge Status ==="
+      [ -f /proc/bus/pci/devices ] && grep "80860707\|80860708\|2b:00\|2c:0\|2d:" /proc/bus/pci/devices || echo "PCIe bridge info not available"
+      
+      echo ""
+      echo "=== dmesg NVIDIA Errors ==="
+      dmesg 2>/dev/null | grep -i "nvidia\|nvrm" | tail -5 || echo "No recent NVIDIA dmesg entries"
+    '')
+    (pkgs.writeShellScriptBin "reload-nvidia" ''
+      #!/usr/bin/env bash
+      set -e
+      echo "Reloading NVIDIA kernel modules..."
+      sudo modprobe -r nvidia_drm nvidia_modeset nvidia 2>/dev/null || true
+      sleep 1
+      sudo modprobe nvidia
+      sleep 1
+      echo "Modules reloaded. Testing nvidia-smi..."
+      nvidia-smi || echo "nvidia-smi still unavailable - check dmesg"
+    '')
     (pkgs.writeShellScriptBin "plasma-x11-test" ''
       set -euo pipefail
 
@@ -224,12 +240,32 @@ in {
       alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
+    
+      raopOpenFirewall = true;
+
+  extraConfig.pipewire = {
+    "10-airplay" = {
+      "context.modules" = [
+        {
+          name = "libpipewire-module-raop-discover";
+        }
+      ];
     };
+  };
+
+    };
+
+    fwupd.enable = true;
+    avahi.enable = true;
 
     pulseaudio.enable = false; # unstable
     udev = {
       enable = true;
       packages = [ pkgs.libsigrok ];
+      extraRules = ''
+        KERNEL=="card*", KERNELS=="0000:00:02.0", SUBSYSTEM=="drm", SUBSYSTEMS=="pci", SYMLINK+="dri/intel-card"
+        KERNEL=="card*", KERNELS=="0000:2d:00.0", SUBSYSTEM=="drm", SUBSYSTEMS=="pci", SYMLINK+="dri/nvidia-card"
+      '';
     };
     #envfs.enable = true;
     dbus.enable = true;
@@ -248,10 +284,6 @@ in {
 
     blueman.enable = true;
 
-    #hardware.openrgb.enable = true;
-    #hardware.openrgb.motherboard = "amd";
-
-    fwupd.enable = true;
 
     upower.enable = true;
 
@@ -272,7 +304,6 @@ in {
     xwayland.enable = true;
     withUWSM = true;
   };
-
   systemd.services.flatpak-repo = {
     path = [ pkgs.flatpak ];
     script = ''

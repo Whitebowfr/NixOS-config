@@ -28,16 +28,60 @@ in
       "image/heic" = [ "loupe.desktop" ];
     };
   };
+
   programs.home-manager = {
     enable = true;
   };
 
   programs.caelestia = {
     enable = true;
-#    package = inputs.caelestia-shell.packages.x86_64-linux.with-cli.override {xkeyboard-config = pkgs.xkeyboard_config;};
-    package = inputs.caelestia-shell.packages.x86_64-linux.with-cli;
-    #settings = import ../customisation/caelestia.nix;
     cli.enable = true;
+  };
+
+  programs.lazyvim = { 
+    enable = true; 
+    extras = {
+      lang.typescript = {
+        enable = true;
+        installDependencies = true;
+        tsc.enable = true;
+        installRuntimeDependencies = true;
+      };
+        lang.nix.enable = true;
+        lang.python = {
+          enable = true;
+          installDependencies = true;
+          installRuntimeDependencies = true;
+        };
+        lang.go = {
+            enable = true;
+            installDependencies = true;
+            installRuntimeDependencies = true;
+          };
+        lang.typst = {
+        enable = true;
+        installDependencies = true;
+        installRuntimeDependencies = true;
+      };
+      };
+      extraPackages = with pkgs; [
+      nixd
+      alejandra
+      nodejs
+      typescript-go
+      ];
+
+
+      treesitterParsers = with pkgs.vimPlugins.nvim-treesitter-parsers; [
+      templ
+      go
+      gomod 
+      gowork
+      json5
+      javascript
+      gosum
+      css
+      ];
   };
 
   xdg.configFile."caelestia"={
@@ -58,12 +102,6 @@ in
     "gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
   };
 
-  xdg.configFile."nvim" = {
-    source = create_symlink "${dotfiles}/nvim";
-    force = true;
-    recursive = true;
-  };
-
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
@@ -74,43 +112,10 @@ in
     "QT_QPA_PLATFORMTHEME=gtk3"
   ];
 
-/*  wayland.windowManager.hyprland = {
-    enable = true;
-    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-    #portalPackage = null;
-    #package = null;
-    xwayland.enable = true;
-    settings = {
-      debug.disable_logs = false;
-    };
-    extraConfig = ''
-$config = $HOME/.config/hypr
-source=$config/settings.conf
-source=$config/keybinds.conf
-source=$config/startup.conf
-source=$config/monitors.conf
-source=$config/shortcuts.conf
-#require(".keybinds")
-#require(".shortcuts")
-#require(".startup")
-#require(".monitors")
-#require(".windowRules")
-#require(".settings")
-
-#hl.env("AQ_DRM_DEVICES", "/dev/dri/card0:/dev/dri/card1")
-#hl.config({
-#    debug = {
-#        disable_logs = false,
-#    },
-#})
-'';
-  };*/
-
   services.nextcloud-client = {
-    enable = true;
+    enable = false;
   };
-  
+
   gtk = {
     enable = true;
     iconTheme = {

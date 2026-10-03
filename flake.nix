@@ -6,14 +6,9 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
 
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
-    nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+    lazyvim.url = "github:pfassina/lazyvim-nix";
 
      quickshell = {
         url = "git+https://git.outfoxxed.me/outfoxxed/quickshell?rev=a1a150fab00a93ea983aaca5df55304bc837f51b";
@@ -29,7 +24,6 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs =
@@ -44,7 +38,6 @@
         inherit system;
         config = {
           allowUnfree = true;
-          allowUnfreePredicate = _: true;
         };
       };
     in
@@ -67,12 +60,13 @@
               home-manager.useUserPackages = true;
 
               home-manager.extraSpecialArgs = specialArgs;
-              home-manager.backupFileExtension = "bkpp";
+              home-manager.backupFileExtension = "bkup-home-manager-${toString inputs.self.lastModifiedDate }";
 
               home-manager.users.whitebow = {inputs, ...}: {
                 imports = [
                   inputs.caelestia-shell.homeManagerModules.default
-                  ./configuration/home.nix
+                  inputs.lazyvim.homeManagerModules.default
+		              ./configuration/home.nix
                 ];
               };
             }

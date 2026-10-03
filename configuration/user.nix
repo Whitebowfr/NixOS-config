@@ -16,19 +16,13 @@ in
   imports = [
     inputs.spicetify-nix.nixosModules.default
     ./programs/orcaslicer.nix
-    ./programs/neovim.nix
   ];
 
   users.groups.kvm.members = [ "${username}" ];
-  #users.groups.libvirtd.members = [ "${username}" ];
 
-  #virtualisation.libvirtd = {
-  #  enable = true;
+    #virtualisation.docker = {
+    #enable = true;
   #};
-
-  virtualisation.docker = {
-    enable = true;
-  };
 
   users = {
     mutableUsers = true;
@@ -50,7 +44,7 @@ in
         "wireshark"
         "plugdev"
         "gamemode"
-	"docker"
+	      "docker"
       ];
 
       packages = with pkgs; [
@@ -59,8 +53,7 @@ in
         libreoffice
         git
         krabby
-        webcord #discord
-        gh
+        unstable.webcord #discord
         ungoogled-chromium
         qucs-s
         steam-run
@@ -74,13 +67,14 @@ in
        	prismlauncher
        	nodejs_24
        	unstable.kicad
-       	zed-editor
       	kiwix
-	krita
-	qbittorrent
-	inkscape
-	librewolf
+	      krita
+	      qbittorrent
+	      inkscape
+	      librewolf
+        rimsort
       ];
+
     };
   };
 
@@ -102,7 +96,6 @@ in
     nix-ld.enable = true;
     gamemode.enable = true;
     gpu-screen-recorder.enable = true;
-    java.enable = true;
     spicetify =
       let
         spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
@@ -114,7 +107,7 @@ in
         enabledExtensions = with spicePkgs.extensions; [
           shuffle
           fullAppDisplay
-          betterGenres
+          availabilityMap
           adblock
           aiBandBlocker
         ];

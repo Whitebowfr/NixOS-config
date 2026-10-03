@@ -2,22 +2,13 @@
 # Packages and Fonts config including the "programs" options
 
 { pkgs, inputs, ... }:
-let
-  python-packages = pkgs.python3.withPackages (
-    ps: with ps; [
-      requests
-      pyquery # needed for hyprland-dots Weather script
-      pyside6
-    ]
-  );
-
-in
 {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages =
     (with pkgs; [
       xinit
+      swappy
       baobab
       btrfs-progs
       clang
@@ -38,6 +29,7 @@ in
       xdg-utils
       dysk
       proton-vpn
+      proton-vpn-cli
       fastfetch
       (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
       btop
@@ -67,15 +59,14 @@ in
       dig
       clang-tools
       jdt-language-server
+      typescript-language-server
       gsettings-desktop-schemas
-
       xfce4-exo
       mousepad
       swappy
-    ])
-    ++ [
-      python-packages
-    ];
+      openconnect
+      alsa-utils
+    ]);
 
   # FONTS
   fonts.packages = with pkgs; [
@@ -91,7 +82,5 @@ in
   fonts.fontconfig = {
     enable = true;
     antialias = true;
-    #hinting = "slight";
-    #subpixelRendering = "rgb";
   };
 }
