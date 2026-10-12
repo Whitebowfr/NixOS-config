@@ -87,24 +87,7 @@ in {
 
   environment.etc."greetd/environments".text = ''
     Hyprland
-    startplasma-wayland
   '';
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    plasma-browser-integration # Comment out this line if you use KDE Connect
-    kdepim-runtime # Unneeded if you use Thunderbird, etc.
-    konsole # Comment out this line if you use KDE's default terminal app
-    oxygen
-    dolphin
-    ark
-    elisa
-    gwenview
-    okular
-    kate
-    dolphin-plugins
-    krdp
-    kwallet
-  ];
 
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
 
@@ -146,26 +129,6 @@ in {
       echo "Modules reloaded. Testing nvidia-smi..."
       nvidia-smi || echo "nvidia-smi still unavailable - check dmesg"
     '')
-    (pkgs.writeShellScriptBin "plasma-x11-test" ''
-      set -euo pipefail
-
-      if [[ -n "''${WAYLAND_DISPLAY:-}" || -n "''${DISPLAY:-}" ]]; then
-        echo "Run this from a plain TTY (no DISPLAY/WAYLAND_DISPLAY)."
-        exit 1
-      fi
-
-      echo "Stopping greetd (releases seat0)..."
-      sudo systemctl stop greetd
-
-      cleanup() {
-        sudo systemctl start greetd >/dev/null 2>&1 || true
-      }
-      trap cleanup EXIT
-
-      # Important: start X11 via NixOS' startx integration
-      # This creates a proper logind session and fixes input on many setups.
-      exec startx ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-x11
-    '')
   ];
 
   # Services to start
@@ -181,7 +144,6 @@ in {
     };
     libinput.enable = true;
     #displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
 
     greetd = {
       enable = true;
