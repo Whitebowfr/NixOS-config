@@ -46,6 +46,11 @@ in
 
     boot.initrd.kernelModules = [ "i915" ];
     boot.kernelModules = [ "kvm-intel" ];
+    boot.extraModprobeConfig = ''
+      options iwlwifi power_save=0
+      options iwlwifi uapsd_disable=1 
+      options iwlwifi power_scheme=1
+    '';
     services.xserver.videoDrivers = [ "modesetting" "nvidia"];
     hardware.nvidia = {
       modesetting.enable = true;
