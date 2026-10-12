@@ -91,47 +91,6 @@ in {
 
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
 
-  environment.systemPackages = lib.mkAfter [
-    (pkgs.writeShellScriptBin "nvidia-egpu-check" ''
-      #!/usr/bin/env bash
-      # Check if RTX eGPU is available and try to detect its bus ID
-      echo "=== Thunderbolt Status ==="
-      boltctl list 2>/dev/null || echo "boltctl not available"
-      
-      echo ""
-      echo "=== NVIDIA GPU Detection ==="
-      if command -v nvidia-smi &> /dev/null; then
-        nvidia-smi || echo "nvidia-smi failed - check if driver is loaded"
-      else
-        echo "nvidia-smi not found"
-      fi
-      
-      echo ""
-      echo "=== Kernel Module Status ==="
-      lsmod 2>/dev/null | grep -i nvidia || echo "NVIDIA modules not loaded"
-      
-      echo ""
-      echo "=== PCIe Bridge Status ==="
-      [ -f /proc/bus/pci/devices ] && grep "80860707\|80860708\|2b:00\|2c:0\|2d:" /proc/bus/pci/devices || echo "PCIe bridge info not available"
-      
-      echo ""
-      echo "=== dmesg NVIDIA Errors ==="
-      dmesg 2>/dev/null | grep -i "nvidia\|nvrm" | tail -5 || echo "No recent NVIDIA dmesg entries"
-    '')
-    (pkgs.writeShellScriptBin "reload-nvidia" ''
-      #!/usr/bin/env bash
-      set -e
-      echo "Reloading NVIDIA kernel modules..."
-      sudo modprobe -r nvidia_drm nvidia_modeset nvidia 2>/dev/null || true
-      sleep 1
-      sudo modprobe nvidia
-      sleep 1
-      echo "Modules reloaded. Testing nvidia-smi..."
-      nvidia-smi || echo "nvidia-smi still unavailable - check dmesg"
-    '')
-  ];
-
-  # Services to start
   services = {
     xserver = {
       enable = true;
