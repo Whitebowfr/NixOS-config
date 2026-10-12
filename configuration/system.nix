@@ -202,38 +202,6 @@ in {
     '';
   };
 
-  zramSwap = {
-    enable = true;
-    priority = 100;
-    memoryPercent = 30;
-    swapDevices = 1;
-    algorithm = "zstd";
-  };
-  services.power-profiles-daemon.enable = true;
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "schedutil";
-  };
-
-  # Extra Logitech Support
-  hardware.logitech.wireless.enable = false;
-  hardware.logitech.wireless.enableGraphical = false;
-
-  #services.pulseaudio.enable = true; # stable branch
-
-  # Bluetooth
-  hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
-  };
 
   # Security / Polkit
   security.rtkit.enable = true;
