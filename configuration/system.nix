@@ -102,7 +102,6 @@ in {
       };
     };
     libinput.enable = true;
-    #displayManager.sddm.enable = true;
 
     greetd = {
       enable = true;
@@ -111,13 +110,11 @@ in {
         initial_session = {
           user = username;
           command = "start-hyprland";
-          # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --cmd Hyprland"; # start Hyprland with a TUI login manager
         };
         default_session = {
           user = username;
           command = "start-hyprland";
         };
-        #default_session = initial_session;
       };
     };
 
@@ -162,7 +159,6 @@ in {
         KERNEL=="card*", KERNELS=="0000:2d:00.0", SUBSYSTEM=="drm", SUBSYSTEMS=="pci", SYMLINK+="dri/nvidia-card"
       '';
     };
-    #envfs.enable = true;
     dbus.enable = true;
 
     fstrim = {
@@ -206,7 +202,6 @@ in {
     '';
   };
 
-  # zram
   zramSwap = {
     enable = true;
     priority = 100;
@@ -282,17 +277,8 @@ in {
     };
   };
 
-  # Virtualization / Containers
-  #virtualisation.libvirtd.enable = false;
-  virtualisation.podman = {
-    enable = false;
-    dockerCompat = false;
-    defaultNetwork.settings.dns_enabled = false;
-  };
-
   console.keyMap = "us";
 
-  # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
   environment.sessionVariables = {
