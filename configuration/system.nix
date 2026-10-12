@@ -1,7 +1,6 @@
 
 { config, pkgs, host, username, options, lib, system, inputs, ... }:
 let
-  #home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz;
 in {
   imports = [
     ./hardware.nix
@@ -78,28 +77,7 @@ in {
   #};
 
   # Extra Module Options
-  networking.wireless.iwd = {
-    enable = true;
-    settings = {
-      Network = {
-        EnableIPv6 = true;
-      };
-      Settings = {
-        AutoConnect = true;
-      };
-    };
-  };
  networking.networkmanager.enable = true;
-  systemd.tmpfiles = {
-    enable = true;
-    rules = let 
-      link = "/var/lib/iwd/eduroam.8021x";
-      target = "../certs/eduroam.8021x";
-    in [
-      "L+ ${link} - - - - ${target}"
-    ];
-  };
-  networking.networkmanager.wifi.backend = "iwd";
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default
     ++ [ "pool.ntp.org" ];
