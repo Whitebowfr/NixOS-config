@@ -6,7 +6,6 @@ in {
     ./hardware.nix
     ./user.nix
     ./packages.nix
-#    ./specialisation.nix
     ./quickshell.nix
     ./terminal.nix
     ./localization.nix
