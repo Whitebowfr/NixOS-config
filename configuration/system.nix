@@ -245,7 +245,6 @@ in {
     };
   };
 
-  console.keyMap = "us";
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
